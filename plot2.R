@@ -6,7 +6,8 @@ if (!exists("dataFrame")) {
         download.file(url=urlFile, temp, method="curl")
         downloadDate <- date()
         con <- unz(temp, nameFile)
-        dataFrame <- read.csv(con, sep=";", header = TRUE)
+        dataFrame <- read.csv(con, sep=";", header = TRUE, 
+                              colClasses=rep("factor",9))
         dataFrame$Time <- strptime(
                 paste(levels(dataFrame$Date)[as.numeric(dataFrame$Date)], 
                       levels(dataFrame$Time)[as.numeric(dataFrame$Time)]), 

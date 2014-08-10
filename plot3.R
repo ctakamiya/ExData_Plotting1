@@ -15,20 +15,24 @@ if (!exists("dataFrame")) {
         dataFrame$Date <- as.Date(
                 levels(dataFrame$Date)[as.numeric(dataFrame$Date)], 
                 format="%d/%m/%Y")
-       
+        
         dataFrame<- with(dataFrame, 
                          subset(dataFrame, Date >= as.Date("2007-02-01") 
                                 & Date <= as.Date("2007-02-02") ))
 }
 
-png(filename="plot1.png", width=480, height=480)  # Open PNG device
+png(filename="plot3.png", width=480, height=480)  # Open PNG device
 
-# Preparing data to Histogram
-idx <- as.numeric(
-        dataFrame$Global_active_power[dataFrame$Global_active_power != "?"])
-dataPlot <- as.numeric(levels(dataFrame$Global_active_power)[idx])
+sub_met1 <- levels(dataFrame$Sub_metering_1)[as.numeric(dataFrame$Sub_metering_1)]
+sub_met2 <- levels(dataFrame$Sub_metering_2)[as.numeric(dataFrame$Sub_metering_2)]
+sub_met3 <- levels(dataFrame$Sub_metering_3)[as.numeric(dataFrame$Sub_metering_3)]
 
+plot(dataFrame$Time , dataFrame$Global_active_power, type="n", 
+     ylab="Global Active Power (kilowatts)", xlab="",ylim=c(0,40))
+lines(dataFrame$Time , sub_met1, col="black")
+lines(dataFrame$Time , sub_met2, col="red")
+lines(dataFrame$Time , sub_met3, col="blue")
 
-hist(dataPlot, xlab="Global Active Power (kilowatts)", 
-     main= "Global Active Power", col="red")
+legend("topright", lty = c(1,1,1), col=c("black", "red", "blue"),
+       legend=c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"))
 dev.off()
